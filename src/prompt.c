@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arossign <arossign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:25:54 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/08 13:33:57 by ltorrean         ###   ########.fr       */
+/*   Updated: 2022/04/12 09:23:27 by arossign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ void	sig_handel(int signal)
 
 void	check_empty_line(void)
 {
-	char			cursor[10];
+	char			cursor[13];
 	int				i;
 	int				y;
 	struct termios	old;
 	struct termios	new;
 
-	ft_bzero(cursor, 10);
+	ft_bzero(cursor, 13);
 	if (tcgetattr(STDIN_FILENO, &old))
 		return (perror("tcgetattr"));
 	new = old;
@@ -53,7 +53,7 @@ void	check_empty_line(void)
 	i = 0;
 	write(0, "\1\033[6n\2", 6);
 	new.c_cc[VTIME] = 0;
-	read(0, cursor, 10);
+	read(0, cursor, 13);
 	while (cursor[i] != ';' && i < 8)
 		i++;
 	y = ft_atoi(&cursor[i + 1]);
