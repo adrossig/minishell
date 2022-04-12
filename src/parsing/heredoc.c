@@ -6,11 +6,26 @@
 /*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:25:42 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/08 11:34:16 by ltorrean         ###   ########.fr       */
+/*   Updated: 2022/04/11 16:08:41 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+char	*change_cmd_here_doc(char *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[i])
+	{
+		i += check_quotes(&cmd[i]);
+		if (cmd[i] == '<' && cmd[i + 1] == '<')
+			cmd[i + 2] = 0;
+		i++;
+	}
+	return (cmd);
+}
 
 int	create_heredoc_file(t_list *strs_holder)
 {

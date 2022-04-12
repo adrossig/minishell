@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arossign <arossign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:26:56 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/09 13:24:52 by arossign         ###   ########.fr       */
+/*   Updated: 2022/04/11 16:46:03 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	g_sig_indice;
 # define SYA "\e[1;31m"
 # define RED "\e[0;31m"
 # define RES "\e[0m"
-# define MINISHELL "mini$ "
+# define MINISHELL "minishell_$ "
 # define MINISHELL_HOME "~ "
 
 //Functions
@@ -115,6 +115,7 @@ void	fork_processes(t_list *cmds, char **envp, t_exit *exit_);
 void	fork_child_2(char *cmd, int stdin_dup, char **envp);
 void	fork_child_1(char *cmd, int stdin_dup, int *fd, char **envp);
 int		fork_here_doc(char *cmd, int stdin_dup, t_exit *exit_);
+char	*change_cmd_here_doc(char *cmd);
 
 //Expand functions:
 int		quoted_wildcard(char *name);
@@ -126,6 +127,7 @@ char	*expand_dollar_symbol(char *line, char **envp, t_exit *exit);
 char	*expand_tilde_symbol(char *line, char **envp);
 void	protect_expanded_name_quotes(char **exp_name);
 int		get_length_char_env(char *str);
+int		wildcards_exeption(char *entry_d_name, char *name);
 
 //Parsing functions:
 char	*file_io_name(char *str, int aut);

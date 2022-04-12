@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arossign <arossign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:25:47 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/09 13:21:46 by arossign         ###   ########.fr       */
+/*   Updated: 2022/04/10 22:46:23 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,39 @@ char	*utils(char *prompt, char **envp)
 	return (line);
 }
 
+void	write_start_minishell(void)
+{
+	ft_putstr_fd(RL_S "\e[0;31m" RL_E"\n"
+		" ███▄ ▄███▓ ██▓ ███▄    █  ██▓  ██████  ██░ ██ ▓█████  ██▓     ██▓    "
+		"\n"
+		"▓██▒▀█▀ ██▒▓██▒ ██ ▀█   █ ▓██▒▒██    ▒ ▓██░ ██▒▓█   ▀ ▓██▒    ▓██▒    "
+		"\n"
+		"▓██    ▓██░▒██▒▓██  ▀█ ██▒▒██▒░ ▓██▄   ▒██▀▀██░▒███   ▒██░    ▒██░    "
+		"\n"
+		"▒██    ▒██ ░██░▓██▒  ▐▌██▒░██░  ▒   ██▒░▓█ ░██ ▒▓█  ▄ ▒██░    ▒██░    "
+		"\n"
+		"▒██▒   ░██▒░██░▒██░   ▓██░░██░▒██████▒▒░▓█▒░██▓░▒████▒░██████▒░██████▒"
+		"\n"
+		"░ ▒░   ░  ░░▓  ░ ▒░   ▒ ▒ ░▓  ▒ ▒▓▒ ▒ ░ ▒ ░░▒░▒░░ ▒░ ░░ ▒░▓  ░░ ▒░▓  ░"
+		"\n"
+		"░  ░      ░ ▒ ░░ ░░   ░ ▒░ ▒ ░░ ░▒  ░ ░ ▒ ░▒░ ░ ░ ░  ░░ ░ ▒  ░░ ░ ▒  ░"
+		"\n"
+		"░      ░    ▒ ░   ░   ░ ░  ▒ ░░  ░  ░   ░  ░░ ░   ░     ░ ░     ░ ░   "
+		"\n"
+		"       ░    ░           ░  ░        ░   ░  ░  ░   ░  ░    ░  ░    ░  ░"
+		"\n"
+		RL_S RES RL_E, 2);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_exit	exit_;
 
+	write_start_minishell();
 	update_shlvl(envp);
 	exit_.exit_shell = 257;
+	if (exit_.exit_code < 0)
+		exit_.exit_code = 0;
 	display_prompt(ARW RL_S SYA RL_E MINISHELL RL_S RES RL_E, envp, &exit_);
 	(void)ac;
 	(void)av;

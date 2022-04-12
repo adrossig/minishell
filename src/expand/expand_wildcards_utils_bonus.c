@@ -6,11 +6,18 @@
 /*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:22:54 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/06 17:05:26 by ltorrean         ###   ########.fr       */
+/*   Updated: 2022/04/11 16:46:31 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
+int	wildcards_exeption(char *entry_d_name, char *name)
+{
+	if (ft_strnstr(name, ".*.", ft_strlen(name)))
+		return (1);
+	return ((ft_strncmp(entry_d_name, ".", 1) || !ft_strcmp(name, ".*")));
+}
 
 int	quoted_wildcard(char *name)
 {

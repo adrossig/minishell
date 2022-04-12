@@ -78,19 +78,6 @@ NORM = 	@if [ $(NORM2_ALL) = "0" ]; then\
 
 default: all
 
-# Help message
-help:
-	@echo "C Project Minishell"
-	@echo
-	@echo "Target rules:"
-	@echo "    all      - Compiles and generates binary file"
-	@echo "    tests    - Compiles with cmocka and run tests binary file"
-	@echo "    valgrind - Runs binary file using valgrind tool"
-	@echo "    clean    - Clean the project by removing binaries"
-	@echo "    fclean   - Clean the project by removing the binaries and the executable"
-	@echo "    help     - Prints a help message with target rules"
-
-
 # Rule for link and generate the binary file
 all: $(NAME)
 
@@ -125,6 +112,8 @@ fclean: clean
 	@rm -rvf $(NAME)
 
 re: fclean all
+
+bonus: $(NAME)
 
 norm :
 		$(NORM)

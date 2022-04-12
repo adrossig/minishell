@@ -6,7 +6,7 @@
 /*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:22:50 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/07 18:21:27 by ltorrean         ###   ########.fr       */
+/*   Updated: 2022/04/11 16:45:24 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*expand_wildcards(char *name)
 	while (entry)
 	{
 		if (!examin_entry_name(entry->d_name, name)
-			&& (ft_strncmp(entry->d_name, ".", 1) || !ft_strcmp(name, ".*")))
+			&& (wildcards_exeption(entry->d_name, name)))
 		{
 			hhol = hol;
 			hol = ft_strjoin((hol), entry->d_name);

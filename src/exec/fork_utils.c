@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fork_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arossign <arossign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:24:42 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/09 13:24:52 by arossign         ###   ########.fr       */
+/*   Updated: 2022/04/11 16:08:32 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,12 @@ int	fork_here_doc(char *cmd, int stdin_dup, t_exit *exit_)
 	if (pid_child == -1)
 		return (perror("minishell: fork"), 1);
 	else if (!pid_child)
+	{
 		get_here_doc_input(cmd, stdin_dup);
+		exit (0);
+	}
 	waitpid(pid_child, &status, 0);
+	cmd = change_cmd_here_doc(cmd);
 	if (WIFEXITED(status) && WEXITSTATUS(status) == 1)
 	{
 		exit_->exit_code = WEXITSTATUS(status);

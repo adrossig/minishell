@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   analysis_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arossign <arossign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/29 12:02:55 by arossign          #+#    #+#             */
-/*   Updated: 2022/03/29 12:02:57 by arossign         ###   ########.fr       */
+/*   Updated: 2022/04/11 12:19:39 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,27 @@ int	unclosed_parenthesis(char *line)
 	return (0);
 }
 
+int	check_valid_parenthesis_2(char *line)
+{
+	int	i;
+
+	i = 1;
+	while (line[i] == ' ')
+		i++;
+	if (line[i] == ')' || line[0] == ')')
+		return (1);
+	while (line[i] && line[i] != ')')
+	{
+		i += check_quotes(&line[i]);
+		i++;
+	}
+	while (line[i] && (line[i] == ')' || line[i] == ' '))
+		i++;
+	if (line[i])
+		return (1);
+	return (0);
+}
+
 int	check_valid_parenthesis(char *line)
 {
 	int	i;
@@ -52,16 +73,12 @@ int	check_valid_parenthesis(char *line)
 		i++;
 	while (line[i])
 	{
+		i += check_quotes(&line[i]);
 		if (line[i] == '(')
 			return (1);
 		i++;
 	}
-	i = 0;
-	while (line[i] && line[i] != ')')
-		i++;
-	while (line[i] && (line[i] == ')' || line[i] == ' '))
-		i++;
-	if (line[i])
+	if (check_valid_parenthesis_2(line))
 		return (1);
 	return (0);
 }
