@@ -6,7 +6,7 @@
 /*   By: arossign <arossign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:25:56 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/12 09:56:27 by arossign         ###   ########.fr       */
+/*   Updated: 2022/04/13 12:24:47 by arossign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	valid_syntax(char *line)
 			return (ft_lstclear(&l_hol, NULL), free(line), 0);
 		l_cmd = l_cmd->next;
 	}
-	free(line);
+//	free(line);
 	ft_lstclear(&l_hol, NULL);
 	return (1);
 }

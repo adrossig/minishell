@@ -6,7 +6,7 @@
 /*   By: arossign <arossign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:25:47 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/12 09:32:36 by arossign         ###   ########.fr       */
+/*   Updated: 2022/04/13 12:12:15 by arossign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,15 @@ void	write_start_minishell(void)
 		"       ░    ░           ░  ░        ░   ░  ░  ░   ░  ░    ░  ░    ░  ░"
 		"\n"
 		RL_S RES RL_E, 2);
+}
+
+
+void* my_malloc(size_t size, const char *file, int line, const char *func)
+{
+    void *p = malloc(size);
+    printf ("Allocated = %s, %i, %s, %p[%li]\n", file, line, func, p, size);
+    /*Link List functionality goes in here*/
+    return p;
 }
 
 int	main(int ac, char **av, char **envp)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arossign <arossign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:25:53 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/08 12:24:13 by ltorrean         ###   ########.fr       */
+/*   Updated: 2022/04/13 12:23:43 by arossign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	check_quotes(char *line)
 		while (line[i] && line[i] != '"')
 			i++;
 	}
+//	free(line);
 	return (i);
 }
 

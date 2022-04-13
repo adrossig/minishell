@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
+/*   By: arossign <arossign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:26:56 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/11 16:46:03 by ltorrean         ###   ########.fr       */
+/*   Updated: 2022/04/13 12:11:59 by arossign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int	g_sig_indice;
 // Local define
 # define APPEND_MODE 1
 # define TRUNC_MODE 0
+
+# define malloc(X) my_malloc( X, __FILE__, __LINE__, __FUNCTION__)
 
 # define REDIR_TOK "minishell: syntax error near unexpected token `redirection'"
 # define LINE_TOKEN "minishell: syntax error near unexpected token `newline'"
@@ -167,5 +169,6 @@ void	display_prompt(char	*prompt, char **envp, t_exit *exit_);
 
 //Fix readline:
 void	rl_replace_line(const char *text, int clear_undo);
+void* my_malloc(size_t size, const char *file, int line, const char *func);
 
 #endif

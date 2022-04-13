@@ -7,7 +7,7 @@ BLUE=\$(COLOR_PREFIX)[1;34m
 END_COLOR=\$(COLOR_PREFIX)[0m
 
 # Defines the C Compiler
-CC := gcc
+CC := clang
 
 # Path of libraries Libft
 LIBFT = $(LIBDIR)/libft
@@ -19,14 +19,14 @@ LIBS := -I$(LIBFT) -I$(INCDIR)
 LDFLAGS = -L$(LIBFT) -lft
 
 # Flags for compiling
-CFLAGS := -Werror -Wall -Wextra -g -g3
+CFLAGS :=  -g3 -DDEBUG=1 -fsanitize=address
 # My mac
 RLFLAGS = -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
 # For school mac
 # RLFLAGS = -L /Users/$(USER)/.brew/opt/readline/lib -I /Users/$(USER)/.brew/opt/readline/include
 
 # Debug options
-DEBUG := -g3 -DDEBUG=1
+DEBUG := -g3 -DDEBUG=1 -fsanitize=address
 
 # Source code directory structure
 BINDIR := bin
