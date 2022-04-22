@@ -6,7 +6,7 @@
 /*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:33:44 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/08 13:37:56 by ltorrean         ###   ########.fr       */
+/*   Updated: 2022/04/16 19:20:18 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,18 @@ int	which_builtin(char *cmd)
 		return (free_2d(args), 0);
 }
 
-int	builtin_io(char *cmd, int stdin_dup, t_exit *exit_)
+int	builtin_io(char *cmd, t_utils *utils_, char **envp, t_exit *exit_)
 {
 	int	r_io;
 
 	r_io = 0;
-	exit_->exit_code = 0;
-	if (fork_here_doc(cmd, stdin_dup, exit_))
+	if (utils_->builtin_iden != 7)
+		exit_->exit_code = 0;
+	if (fork_here_doc(cmd, utils_->stdin_dup, envp, exit_))
 		return (0);
 	while (r_io != -1)
 	{
-		r_io = get_io_files(cmd, stdin_dup);
+		r_io = get_io_files(cmd, utils_->stdin_dup);
 		if (r_io == -2)
 			return (exit_->exit_code = 1, 0);
 	}
@@ -63,7 +64,7 @@ int	execute_builtin(char *cmd, t_utils *utils_, char **envp, t_exit *exit_)
 	if (!utils_->builtin_iden)
 		return (0);
 	stdout_dup = dup(STDOUT_FILENO);
-	if (utils_->builtin_iden != 7 && !builtin_io(cmd, utils_->stdin_dup, exit_))
+	if (!builtin_io(cmd, utils_, envp, exit_))
 		return (-1);
 	args = ft_split(cmd, ' ');
 	remove_quotes_2d(&args[1]);

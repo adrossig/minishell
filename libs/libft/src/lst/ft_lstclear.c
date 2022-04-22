@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arossign <arossign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 15:27:12 by adrossig          #+#    #+#             */
-/*   Updated: 2022/02/11 23:33:06 by arossign         ###   ########.fr       */
+/*   Updated: 2022/04/14 16:58:30 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
 	t_list	*tmp;
 
-	if (!lst || !*lst || !del)
+	if (!lst || !*lst)
 		return ;
 	while (*lst)
 	{
 		tmp = (*lst)->next;
-		del((*lst)->content);
+		if (del)
+			del((*lst)->content);
 		free(*lst);
 		*lst = tmp;
 	}

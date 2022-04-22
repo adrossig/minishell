@@ -6,7 +6,7 @@
 /*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:23:45 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/08 12:09:09 by ltorrean         ###   ########.fr       */
+/*   Updated: 2022/04/20 14:35:40 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,25 +54,45 @@ void	exit_minishell_ctrl_d(char **envp, t_exit *exit_)
 	exit(exit_->exit_code);
 }
 
-void	ft_exit(char **args, char **envp, t_exit *exit_)
+void	ft_exit_assign_exit_shell(char **args, t_exit *exit_)
 {
-	int	j;
-
-	j = 0;
-	ft_putendl_fd("exit", STDOUT_FILENO);
-	while (args && args[0] && args[0][j])
-	{
-		if (args[0][j] == '-' || args[0][j] == '+')
-			j++;
-		if (!ft_isdigit(args[0][j]))
-			return (exit_->exit_shell = 255, free_envp(envp),
-				ft_putendl_fd(ERR_EXIT_ARG, STDERR_FILENO));
-		j++;
-	}
 	if (args && args[0] && args[1])
 		return (exit_->exit_code = 1, ft_putendl_fd(ERR_EXIT_NUM, 2));
-	if (args[0])
-		exit_->exit_shell = ((unsigned char)ft_atoi(args[0]));
+	if (exit_->exit_pipe == 1)
+	{
+		if (args[0])
+			exit_->exit_shell = ((unsigned char)ft_atoi(args[0]));
+		else
+			exit_->exit_shell = exit_->exit_code;
+	}
 	else
-		exit_->exit_shell = exit_->exit_code;
+		if (args[0])
+			exit_->exit_code = ((unsigned char)ft_atoi(args[0]));
+}
+
+void	ft_exit(char **args, char **envp, t_exit *exit_)
+{
+	int		j;
+	int		res;
+	char	sign;
+	int		number;
+
+	sign = 'M';
+	number = 0;
+	if (exit_->exit_pipe == 1)
+		ft_putendl_fd("exit", STDOUT_FILENO);
+	j = ft_exit_skip_spaces_e_quote(args);
+	if (args && args[0] && (args[0][j] == '-' || args[0][j] == '+'))
+		sign = args[0][j++];
+	res = is_numeric_argument_required(&args[0][j], sign, number);
+	if (res == 1)
+	{
+		if (exit_->exit_pipe == 1)
+			return (exit_->exit_shell = 255, free_envp(envp),
+				ft_putendl_fd(ERR_EXIT_ARG, STDERR_FILENO));
+		else
+			return (exit_->exit_code = 255,
+				ft_putendl_fd(ERR_EXIT_ARG, STDERR_FILENO));
+	}
+	ft_exit_assign_exit_shell(args, exit_);
 }

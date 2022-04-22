@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arossign <arossign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:25:53 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/13 12:23:43 by arossign         ###   ########.fr       */
+/*   Updated: 2022/04/16 20:16:32 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	check_quotes(char *line)
 		while (line[i] && line[i] != '"')
 			i++;
 	}
-//	free(line);
 	return (i);
 }
 
@@ -69,7 +68,7 @@ int	pipe_parse(char *line, t_list **cmds)
 char	*expand_cmd(char *line, char **envp, t_exit *exit_)
 {
 	line = expand_dollar_symbol(ft_strdup(line), envp, exit_);
-	line = expand_tilde_symbol(ft_strdup(line), envp);
+	line = expand_tilde_symbol(line, envp);
 	line = get_wildcards_expressions(line);
 	return (line);
 }
@@ -83,6 +82,7 @@ void	parse_input(char *line, char **envp, t_exit *exit_)
 		return ;
 	cmds = ft_lstnew(line);
 	pipe_parse(line, &cmds);
+	exit_->exit_pipe = 1;
 	fork_processes(cmds, envp, exit_);
 	free(line);
 	check_empty_line();

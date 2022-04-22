@@ -6,7 +6,7 @@
 /*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/07 19:49:18 by ltorrean          #+#    #+#             */
-/*   Updated: 2022/04/07 20:53:27 by ltorrean         ###   ########.fr       */
+/*   Updated: 2022/04/14 23:01:41 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,15 @@ char	*expand_tilde_symbol(char *line, char **envp)
 	while (line && line[++i])
 	{
 		i += check_quotes(&line[i]);
-		if (line && ((line[i] == '~' && line[i + 1] == ' ')
+		if (line && (!line[i - 1] || line[i - 1] == ' ')
+			&& ((line[i] == '~' && line[i + 1] == ' ')
 				|| (line[i] == '~' && !line[i + 1])
 				|| (line[i] == '~' && line[i + 1] && line[i + 1] == '/')))
 		{
 			line[i--] = '\0';
 			env_var = get_env_var_tilde(&line[i + 1], envp);
 			hol = ft_strjoin(&line[0], env_var);
+			free(env_var);
 			free(line);
 			line = hol;
 		}

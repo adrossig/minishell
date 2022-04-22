@@ -3,21 +3,51 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arossign <arossign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:25:47 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/13 12:12:15 by arossign         ###   ########.fr       */
+/*   Updated: 2022/04/20 10:57:40 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-void	update_shlvl(char **envp)
+int	ft_atoi_mod(const char *str)
+{
+	int		neg;
+	long	res;
+
+	neg = 1;
+	res = 0;
+	while ((*str >= 9 && *str <= 13) || *str == 32)
+		str++;
+	if (*str == 43 || *str == 45)
+	{
+		if (*str == 45)
+		neg = -1;
+		str++;
+	}
+	if (!(*str >= 48 && *str <= 57))
+		return (0);
+	while (*str >= 48 && *str <= 57)
+	{
+		res = res * 10 + (*str - 48);
+		str++;
+	}
+	while ((*str >= 9 && *str <= 13) || *str == 32)
+		str++;
+	if (*str)
+		return (0);
+	return (res * neg);
+}
+
+void	update_shlvl(char **envp, t_exit *exit_)
 {
 	int		i;
 	int		shlvl;
 	char	*hol;
 	char	*shlvl_str;
+	char	**args;
 
 	i = 0;
 	while (envp && envp[i])
@@ -25,42 +55,49 @@ void	update_shlvl(char **envp)
 		envp[i] = ft_strdup(envp[i]);
 		i++;
 	}
-	shlvl = ft_atoi(ft_getenv("SHLVL=", envp));
+	if (ft_getenv("SHLVL=", envp))
+		shlvl = ft_atoi_mod(ft_getenv("SHLVL=", envp));
+	else
+		shlvl = 0;
 	hol = ft_itoa(shlvl + 1);
 	shlvl_str = ft_strjoin("SHLVL=", hol);
+	args = ft_split(shlvl_str, ' ');
 	free (hol);
-	update_envp(shlvl_str, envp);
+	ft_export(args, envp, exit_);
 	free(shlvl_str);
+	free_2d(args);
 }
 
-char	*utils(char *prompt, char **envp)
+char	*utils(char *prompt, char **envp, t_exit *exit_)
 {
 	char	*line;
 	char	buff[PATH_MAX];
 	char	s[PATH_MAX];
 
 	s[0] = 0;
-	ft_strcpy(s, ARW RL_S SYA RL_E);
+	if (exit_->exit_code > 0)
+		ft_strcpy(s, RED ARW RES);
+	else
+		ft_strcpy(s, GREEN ARW RES);
 	if (ft_getenv("HOME=", envp) && ft_getenv("PWD=", envp)
 		&& !ft_strcmp(ft_getenv("PWD=", envp), ft_getenv("HOME=", envp)))
-		line = readline_config(ARW RL_S RED RL_E MINISHELL_HOME RL_S RES RL_E);
+		ft_strcat(s, PURPLE MINISHELL_HOME);
 	else
 	{
+		ft_strcat(s, RED_LIGHT);
 		if (getcwd(buff, sizeof(buff)) == NULL)
-			line = readline_config(prompt);
+			ft_strcat(s, prompt);
 		else
-		{
 			ft_strcat(s, ft_strrchr(buff, '/') + 1);
-			ft_strcat(s, " \1\e[0m\2");
-			line = readline_config(s);
-		}
 	}
+	ft_strcat(s, " "RES);
+	line = readline_config(s);
 	return (line);
 }
 
 void	write_start_minishell(void)
 {
-	ft_putstr_fd(RL_S "\e[0;31m" RL_E"\n"
+	ft_putstr_fd(RED"\n"
 		" ███▄ ▄███▓ ██▓ ███▄    █  ██▓  ██████  ██░ ██ ▓█████  ██▓     ██▓    "
 		"\n"
 		"▓██▒▀█▀ ██▒▓██▒ ██ ▀█   █ ▓██▒▒██    ▒ ▓██░ ██▒▓█   ▀ ▓██▒    ▓██▒    "
@@ -79,16 +116,7 @@ void	write_start_minishell(void)
 		"\n"
 		"       ░    ░           ░  ░        ░   ░  ░  ░   ░  ░    ░  ░    ░  ░"
 		"\n"
-		RL_S RES RL_E, 2);
-}
-
-
-void* my_malloc(size_t size, const char *file, int line, const char *func)
-{
-    void *p = malloc(size);
-    printf ("Allocated = %s, %i, %s, %p[%li]\n", file, line, func, p, size);
-    /*Link List functionality goes in here*/
-    return p;
+		RES, 2);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -96,11 +124,11 @@ int	main(int ac, char **av, char **envp)
 	t_exit	exit_;
 
 	write_start_minishell();
-	update_shlvl(envp);
 	exit_.exit_shell = 257;
-	if (exit_.exit_code < 0)
-		exit_.exit_code = 0;
-	display_prompt(ARW RL_S SYA RL_E MINISHELL RL_S RES RL_E, envp, &exit_);
+	exit_.exit_code = 0;
+	exit_.exit_pipe = 0;
+	update_shlvl(envp, &exit_);
+	display_prompt(MINISHELL, envp, &exit_);
 	(void)ac;
 	(void)av;
 	return (0);

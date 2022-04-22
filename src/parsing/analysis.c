@@ -6,7 +6,7 @@
 /*   By: arossign <arossign@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:25:35 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/13 12:30:46 by arossign         ###   ########.fr       */
+/*   Updated: 2022/03/28 16:36:40 by arossign         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	consecutive_redir_symbol(char *str)
 			return (0);
 		i += check_quotes(&str[i]) + 1;
 	}
-	free(str);
 	return (1);
 }
 
@@ -97,7 +96,6 @@ int	contradict_redir_symbol(char *str, char symbol_one, char symbol_two)
 			return (0);
 		i += check_quotes(&str[i]) + 1;
 	}
-	free(str);
 	return (1);
 }
 

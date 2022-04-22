@@ -6,7 +6,7 @@
 /*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:24:40 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/08 13:28:29 by ltorrean         ###   ########.fr       */
+/*   Updated: 2022/04/16 20:16:43 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	execute_fork(char *cmd, t_utils *utils_, char **envp, t_exit *exit_)
 	pid_t	pid_child;
 	int		r_builtin;
 
-	if (fork_here_doc(cmd, utils_->stdin_dup, exit_))
+	if (fork_here_doc(cmd, utils_->stdin_dup, envp, exit_))
 		return (1);
 	if (pipe(fd) != 0)
 		return (perror("minishell: pipe"), 1);
@@ -91,6 +91,7 @@ void	fork_processes(t_list *cmds, char **envp, t_exit *exit_)
 	{
 		if (execute_fork(cmds->content, &utils_, envp, exit_))
 			return (arrange_return(hol, utils_.stdin_dup));
+		exit_->exit_pipe += 1;
 		cmds = cmds->next;
 	}
 	utils_.fd = STDOUT_FILENO;
@@ -98,7 +99,7 @@ void	fork_processes(t_list *cmds, char **envp, t_exit *exit_)
 	{
 		pid_child = fork();
 		if (!pid_child)
-			fork_child_2(cmds->content, utils_.stdin_dup, envp);
+			fork_child_2(cmds->content, utils_.stdin_dup, envp, exit_);
 		get_exit_code(pid_child, &status, exit_);
 	}
 	arrange_return(hol, utils_.stdin_dup);

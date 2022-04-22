@@ -6,7 +6,7 @@
 /*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:25:42 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/11 16:08:41 by ltorrean         ###   ########.fr       */
+/*   Updated: 2022/04/20 15:19:00 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,28 @@ int	create_heredoc_file(t_list *strs_holder)
 	return (1);
 }
 
-char	*here_doc(char *limiter, int stdin_no)
+int	discover_if_there_are_quotes(char *limiter)
+{
+	int	quotes;
+
+	if (ft_strchr(limiter, '\'') || ft_strchr(limiter, '"'))
+		quotes = 1;
+	else
+		quotes = 0;
+	return (quotes);
+}
+
+char	*here_doc(char *limiter, int stdin_no, char **envp, t_exit *exit_)
 {
 	t_list	*strs_holder;
 	char	*line;
+	int		quotes;
 
 	strs_holder = NULL;
 	dup2(stdin_no, STDIN_FILENO);
 	unlink(".heredoc.tmp");
+	quotes = discover_if_there_are_quotes(limiter);
+	remove_quotes_1d(limiter);
 	while (1)
 	{
 		g_sig_indice = -1;
@@ -64,6 +78,8 @@ char	*here_doc(char *limiter, int stdin_no)
 		if (!line || (!ft_strncmp(line, limiter, ft_strlen(limiter))
 				&& line[ft_strlen(limiter)] == '\0'))
 			break ;
+		if (!quotes)
+			line = expand_dollar_s_heredoc(ft_strdup(line), envp, exit_);
 		ft_lstadd_back(&strs_holder, ft_lstnew(line));
 	}
 	if (!create_heredoc_file(strs_holder))
@@ -72,7 +88,7 @@ char	*here_doc(char *limiter, int stdin_no)
 	return (ft_strdup(".heredoc.tmp"));
 }
 
-void	get_here_doc_input(char *cmd, int stdin_dup)
+void	get_here_doc_input(char *cmd, int stdin_dp, char **envp, t_exit *exit_)
 {
 	int	i;
 	int	hol;
@@ -87,7 +103,7 @@ void	get_here_doc_input(char *cmd, int stdin_dup)
 			if (hol != -1)
 				to_space(cmd, hol, 2);
 			hol = i;
-			here_doc(file_io_name(&cmd[i + 2], 1), stdin_dup);
+			here_doc(file_io_name_2(&cmd[i + 2], 1), stdin_dp, envp, exit_);
 		}
 		i++;
 	}

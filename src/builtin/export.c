@@ -6,7 +6,7 @@
 /*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:23:51 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/08 12:11:14 by ltorrean         ###   ########.fr       */
+/*   Updated: 2022/04/20 14:48:51 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	export_print_envp(char **envp)
 		i++;
 	}
 	print_envp(hol);
+	free(hol);
 }
 
 int	check_val_quotes(char *str, t_exit *exit_)
@@ -65,7 +66,7 @@ int	check_val_quotes(char *str, t_exit *exit_)
 		ft_putendl_fd(EXP_ARG, STDERR_FILENO);
 		exit_->exit_code = 1;
 	}
-	return (1);
+	return (0);
 }
 
 int	extract_var(char **var, bool *plus)
@@ -97,21 +98,18 @@ int	update_envp(char *var, char **envp)
 
 	name = ft_strdup(var);
 	len = extract_var(&name, &plus);
-	name[len - plus] = '\0';
-	i = 0;
-	while (envp[i])
+	if (!ft_strchr(name, '='))
+		return (export_check_single(name, len, plus, envp));
+	name[len - plus - 1] = '\0';
+	i = -1;
+	while (envp[++i])
 	{
-		hol = ft_strnstr(envp[i], name, len - plus);
+		hol = ft_strnstr(envp[i], name, len - plus - 1);
 		if (hol)
 		{
-			free(envp[i]);
-			if (plus)
-				envp[i] = ft_strjoin(envp[i], &var[len]);
-			else
-				envp[i] = ft_strdup(var);
+			export_change_value(&envp[i], len, plus, var);
 			return (free((name - plus)), 1);
 		}
-		i++;
 	}
 	return (free((name - plus)), 0);
 }

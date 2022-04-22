@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arossign <arossign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:25:54 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/12 09:23:27 by arossign         ###   ########.fr       */
+/*   Updated: 2022/04/15 20:32:24 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	display_prompt(char	*prompt, char **envp, t_exit *exit_)
 	while (1)
 	{
 		g_sig_indice = 1;
-		line = utils(prompt, envp);
+		line = utils(prompt, envp, exit_);
 		g_sig_indice = 0;
 		if (!line)
 			exit_minishell_ctrl_d(envp, exit_);

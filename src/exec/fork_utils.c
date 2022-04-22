@@ -6,7 +6,7 @@
 /*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:24:42 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/11 16:08:32 by ltorrean         ###   ########.fr       */
+/*   Updated: 2022/04/16 15:18:16 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	exit_builtin(int r_builtint)
 	exit(0);
 }
 
-int	fork_here_doc(char *cmd, int stdin_dup, t_exit *exit_)
+int	fork_here_doc(char *cmd, int stdin_dup, char **envp, t_exit *exit_)
 {
 	int	status;
 	int	pid_child;
@@ -29,7 +29,7 @@ int	fork_here_doc(char *cmd, int stdin_dup, t_exit *exit_)
 		return (perror("minishell: fork"), 1);
 	else if (!pid_child)
 	{
-		get_here_doc_input(cmd, stdin_dup);
+		get_here_doc_input(cmd, stdin_dup, envp, exit_);
 		exit (0);
 	}
 	waitpid(pid_child, &status, 0);
@@ -59,12 +59,12 @@ void	fork_child_1(char *cmd, int stdin_dup, int *fd, char **envp)
 	execute_cmd(cmd, envp);
 }
 
-void	fork_child_2(char *cmd, int stdin_dup, char **envp)
+void	fork_child_2(char *cmd, int stdin_dup, char **envp, t_exit *exit_)
 {
 	int	r_io;
 
 	r_io = 0;
-	get_here_doc_input(cmd, stdin_dup);
+	get_here_doc_input(cmd, stdin_dup, envp, exit_);
 	while (r_io != -1)
 	{
 		r_io = get_io_files(cmd, stdin_dup);

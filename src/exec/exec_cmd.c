@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arossign <arossign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:24:37 by arossign          #+#    #+#             */
-/*   Updated: 2022/03/28 16:02:08 by arossign         ###   ########.fr       */
+/*   Updated: 2022/04/14 20:36:27 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	check_cmd_format(t_collect *var, char *short_cmd)
 	if (!ft_strncmp(var->cmd[0], ".\0", 2))
 		exit_error(var, short_cmd, ERR_USAGE, 2);
 	if (stat(var->cmd[0], &buffer))
-		exit_error(var, short_cmd, NULL, 126);
+		exit_error(var, short_cmd, NULL, 127);
 	else if (buffer.st_mode & S_IFDIR)
 		exit_error(var, short_cmd, ERR_ISDIR, 126);
 	else if ((buffer.st_mode & S_IXUSR) == 0 || (buffer.st_mode & S_IRUSR) == 0)

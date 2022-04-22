@@ -6,7 +6,7 @@
 /*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:23:41 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/08 12:08:03 by ltorrean         ###   ########.fr       */
+/*   Updated: 2022/04/18 17:49:27 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ void	ft_env(char **args, char **envp, t_exit *exit_)
 	}
 	while (envp[i])
 	{
-		ft_putendl_fd(envp[i], STDOUT_FILENO);
+		if (ft_strchr(envp[i], '='))
+			ft_putendl_fd(envp[i], STDOUT_FILENO);
 		i++;
 	}
 }

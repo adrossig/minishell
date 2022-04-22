@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_files.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: arossign <arossign@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:25:39 by arossign          #+#    #+#             */
-/*   Updated: 2022/03/30 17:15:38 by arossign         ###   ########.fr       */
+/*   Updated: 2022/04/20 15:18:13 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,25 @@ char	*file_io_name(char *str, int aut)
 		file_name = ft_substr(str, start, i);
 		remove_quotes_1d(file_name);
 	}
+	to_space(str, start, i);
+	return (file_name);
+}
+
+char	*file_io_name_2(char *str, int aut)
+{
+	int		i;
+	int		j;
+	int		start;
+	char	*file_name;
+
+	i = 0;
+	j = 0;
+	file_name = NULL;
+	j = get_file_char(&str[i]);
+	start = i + j;
+	i = get_length_char(&str[start]);
+	if (aut)
+		file_name = ft_substr(str, start, i);
 	to_space(str, start, i);
 	return (file_name);
 }

@@ -6,7 +6,7 @@
 /*   By: ltorrean <ltorrean@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/28 14:23:52 by arossign          #+#    #+#             */
-/*   Updated: 2022/04/08 12:14:15 by ltorrean         ###   ########.fr       */
+/*   Updated: 2022/04/20 14:33:40 by ltorrean         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	unset_envp(char *var, char **envp)
 	while (envp[i])
 	{
 		hol = ft_strnstr(envp[i], var, ft_strlen(var));
-		if (hol && envp[i][ft_strlen(var)] == '=')
+		if (hol && (envp[i][ft_strlen(var)] == '=' || !ft_strchr(envp[i], '=')))
 		{
 			free(envp[i]);
 			while (envp[i])

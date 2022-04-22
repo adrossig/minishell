@@ -7,7 +7,7 @@ BLUE=\$(COLOR_PREFIX)[1;34m
 END_COLOR=\$(COLOR_PREFIX)[0m
 
 # Defines the C Compiler
-CC := clang
+CC := gcc
 
 # Path of libraries Libft
 LIBFT = $(LIBDIR)/libft
@@ -19,14 +19,11 @@ LIBS := -I$(LIBFT) -I$(INCDIR)
 LDFLAGS = -L$(LIBFT) -lft
 
 # Flags for compiling
-CFLAGS :=  -g3 -DDEBUG=1 -fsanitize=address
-# My mac
-RLFLAGS = -L/usr/local/opt/readline/lib -I/usr/local/opt/readline/include
-# For school mac
-# RLFLAGS = -L /Users/$(USER)/.brew/opt/readline/lib -I /Users/$(USER)/.brew/opt/readline/include
+CFLAGS := -Werror -Wall -Wextra -g -g3
+RLFLAGS = -L /Users/$(USER)/.brew/opt/readline/lib -I /Users/$(USER)/.brew/opt/readline/include
 
 # Debug options
-DEBUG := -g3 -DDEBUG=1 -fsanitize=address
+DEBUG := -g3 -DDEBUG=1
 
 # Source code directory structure
 BINDIR := bin
@@ -37,12 +34,12 @@ TESTDIR := test
 
 # Source code file extension
 BUILTIN := builtins_utils.c builtins.c cd.c echo.c env.c exit.c export_utils.c \
-			export.c pwd.c unset.c
+			export.c pwd.c unset.c exit_utils.c
 
 EXEC := exec_cmd.c fork_utils.c fork_processe.c
 
 EXPAND := expand_dollar_symbol.c expand_wildcards_bonus.c expand_wildcards_utils_bonus.c \
-			expand_tilde_symbol.c
+			expand_tilde_symbol.c expand_dollar_symbol_utils.c expand_dollar_symbol_heredoc.c
 
 PARSING := analysis_utils.c analysis.c files.c free.c get_files.c heredoc.c \
 			logic_utils.c logic.c parsing_utils.c parsing.c syntax.c
